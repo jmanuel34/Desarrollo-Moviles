@@ -1,4 +1,5 @@
-package com.kuvuni.consumoapis
+package com.curso.consumo_api
+
 import com.google.gson.annotations.SerializedName
 
 data class MovieSearchResponse(
@@ -6,6 +7,7 @@ data class MovieSearchResponse(
     @SerializedName("error_code") val errorCode: Int,
     val description: List<MovieResponse>,
 )
+
 data class MovieResponse(
     /*
     "#TITLE": "Batman",
@@ -16,8 +18,10 @@ data class MovieResponse(
     "#AKA": "Batman (1966) ",
     "#IMDB_URL": "https://imdb.com/title/tt0059968",
     "#IMDB_IV": "https://IMDb.iamidiotareyoutoo.com/title/tt0059968",
+
     "#IMG_POSTER": "https://m.media-
     amazon.com/images/M/MV5BZWFjNTdlZjctZTRkNC00OTQ1LWI3NDktOWY0ZWZmNzFiOTNkXk
+
     EyXkFqcGc@._V1_.jpg",
     "photo_width": 1084,
     "photo_height": 1645
