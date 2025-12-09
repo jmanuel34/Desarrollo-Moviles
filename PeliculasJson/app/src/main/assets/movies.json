@@ -1,0 +1,158 @@
+{
+  "movies": [
+    {
+      "title": "La búsqueda del tiempo perdido",
+      "year": 2021,
+      "genres": ["Drama", "Misterio"],
+      "rating": 7.8,
+      "cast": ["Actor Uno", "Actor Dos"]
+    },
+    {
+      "title": "Aventura en Kotlin",
+      "year": 2023,
+      "genres": ["Aventura", "Comedia"],
+      "rating": 8.2,
+      "cast": ["Actor Tres", "Actor Cuatro"]
+    },
+    {
+      "title": "Noche estrellada",
+      "year": 2019,
+      "genres": ["Drama", "Romance"],
+      "rating": 7.1,
+      "cast": ["Actriz A", "Actor B"]
+    },
+    {
+      "title": "Código abierto",
+      "year": 2018,
+      "genres": ["Documental", "Tecnología"],
+      "rating": 8.5,
+      "cast": ["Narrador X"]
+    },
+    {
+      "title": "El último servidor",
+      "year": 2020,
+      "genres": ["Ciencia ficción", "Thriller"],
+      "rating": 7.9,
+      "cast": ["Actor C", "Actriz D"]
+    },
+    {
+      "title": "Sabor a memoria de Dora",
+      "year": 2017,
+      "genres": ["Drama", "Culinario"],
+      "rating": 6.8,
+      "cast": ["Chef Uno", "Chef Dos"]
+    },
+    {
+      "title": "La ruta infinita del patito",
+      "year": 2015,
+      "genres": ["Aventura", "Bélico"],
+      "rating": 7.4,
+      "cast": ["Actor E", "Actor F"]
+    },
+    {
+      "title": "Pequeños gigantes",
+      "year": 2022,
+      "genres": ["Familiar", "Comedia"],
+      "rating": 7.6,
+      "cast": ["Niño A", "Niña B"]
+    },
+    {
+      "title": "Hackers en la red",
+      "year": 2024,
+      "genres": ["Thriller", "Tecnología"],
+      "rating": 8.0,
+      "cast": ["Actor G", "Actriz H"]
+    },
+    {
+      "title": "La isla de los algoritmos",
+      "year": 2020,
+      "genres": ["Animación", "Familia"],
+      "rating": 7.0,
+      "cast": ["Voz A", "Voz B"]
+    },
+    {
+      "title": "Memorias de un desarrollador",
+      "year": 2016,
+      "genres": ["Biografía", "Drama"],
+      "rating": 7.3,
+      "cast": ["Actor I", "Actriz J"]
+    },
+    {
+      "title": "Ecos del pasado",
+      "year": 2014,
+      "genres": ["Misterio", "Suspense"],
+      "rating": 6.9,
+      "cast": ["Actor K", "Actriz L"]
+    },
+    {
+      "title": "Horizontes perdidos",
+      "year": 2013,
+      "genres": ["Drama", "Aventura"],
+      "rating": 7.2,
+      "cast": ["Actriz M", "Actor N"]
+    },
+    {
+      "title": "Silencio entre bytes",
+      "year": 2021,
+      "genres": ["Thriller", "Tecnología"],
+      "rating": 7.7,
+      "cast": ["Actor O", "Actriz P"]
+    },
+    {
+      "title": "La melodía del código",
+      "year": 2012,
+      "genres": ["Musical", "Documental"],
+      "rating": 6.5,
+      "cast": ["Músico Q", "Narrador R"]
+    },
+    {
+      "title": "Noches en el servidor",
+      "year": 2011,
+      "genres": ["Horror", "Tecnología"],
+      "rating": 6.6,
+      "cast": ["Actor S", "Actriz T"]
+    },
+    {
+      "title": "Jardín de compilers",
+      "year": 2010,
+      "genres": ["Drama", "Fantasía"],
+      "rating": 7.0,
+      "cast": ["Actor U", "Actriz V"]
+    },
+    {
+      "title": "Viajero del packet",
+      "year": 2025,
+      "genres": ["Ciencia ficción", "Aventura"],
+      "rating": 8.3,
+      "cast": ["Actor W", "Actriz X"]
+    },
+    {
+      "title": "Café y commits",
+      "year": 2018,
+      "genres": ["Comedia", "Drama"],
+      "rating": 7.1,
+      "cast": ["Actor Y", "Actriz Z"]
+    },
+    {
+      "title": "Rutina de despliegue",
+      "year": 2019,
+      "genres": ["Comedia", "Documental"],
+      "rating": 6.9,
+      "cast": ["Actor AA", "Actriz AB"]
+    },
+    {
+      "title": "Olas de datos",
+      "year": 2022,
+      "genres": ["Drama", "Romance"],
+      "rating": 7.5,
+      "cast": ["Actor AC", "Actriz AD"]
+    },
+    {
+      "title": "Píxel final",
+      "year": 2013,
+      "genres": ["Acción", "Thriller"],
+      "rating": 7.4,
+      "cast": ["Actor AE", "Actriz AF"]
+    }
+  ]
+}
