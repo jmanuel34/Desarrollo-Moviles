@@ -54,8 +54,12 @@ class MainActivity : AppCompatActivity() {
             val primerElemento =movie?.description[0]
             runOnUiThread {
                 if (call.isSuccessful) {
+                    movie.description.forEach {  }()){
+                    forEach { pelicula ->
+                        Log.d(TAG, "Película: ${pelicula.title} | Año: ${pelicula.year} | ID: ${pelicula.imdbId}")
+                    }
       //              Log.d(TAG, "Respuesta del servidor:${primerElemento.toString()}}")
-                    Log.d(TAG, "Respuesta Peliculas:${movie?.toString()}}")
+      //              Log.d(TAG, "Respuesta Peliculas:${movie?.toString()}}")
                 } else {
                     Log.e(TAG, "Error en la llamada:${call.errorBody()?.string()}")
                 }
@@ -63,3 +67,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+/*
+//*/
+private fun searchMovie(query: String) {
+    CoroutineScope(Dispatchers.IO).launch {
+
+        // 1. Ejecutar la llamada de manera síncrona en el hilo de IO
+        // NOTA: Asumo que getRetrofit().create(...).findMovieByTitle(query) devuelve Call<List<MovieResponse>>
+        val call = getRetrofit().create(ApiService::class.java).findMovieByTitle(query)
+
+        // El objeto 'movieList' es el cuerpo de la respuesta, que debería ser List<MovieResponse>?
+        // Si tu API devuelve una lista directamente:
+        val movieList: List<MovieResponse>? = call.body()
+
+        // El resto del código que interactúa con la UI debe ir en el hilo principal
+        runOnUiThread {
+            if (call.isSuccessful) {
+
+                if (!movieList.isNullOrEmpty()) {
+
+                    Log.d(TAG, "--- Inicia Listado de Películas ---")
+
+                    // 2. ⭐ CLAVE: Iterar sobre la lista y usar Log.d() para cada elemento
+                    movieList.forEach { pelicula ->
+                        Log.d(TAG, "Película: ${pelicula.title} | Año: ${pelicula.year} | ID: ${pelicula.imdbId}")
+                    }
+
+                    Log.d(TAG, "--- Fin del Listado (Total: ${movieList.size}) ---")
+
+                } else {
+                    // Manejar el caso de lista vacía
+                    Log.w(TAG, "La búsqueda no arrojó resultados válidos.")
+                }
+            } else {
+                // Manejar errores HTTP (ej: 404, 500)
+                Log.e(TAG, "Error en la llamada: Código ${call.code()}. Mensaje: ${call.errorBody()?.string()}")
+            }
+        }
+    }
+ */
+ */
