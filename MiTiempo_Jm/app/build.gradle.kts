@@ -1,9 +1,11 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localProperties.load(localPropertiesFile.inputStream())
+   localProperties.load(localPropertiesFile.inputStream())
+    //localProperties.load(FileInputStream(localPropertiesFile))
 }
 plugins {
     alias(libs.plugins.android.application)
@@ -45,6 +47,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -59,5 +65,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 // Convertidor Gson para serializar/deserializar JSON
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Interceptor para ver las trazas de las llamadas (¡muy importante!)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+    // Para usar lifecycleScope, la forma moderna de gestionar corrutinas
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
 }
