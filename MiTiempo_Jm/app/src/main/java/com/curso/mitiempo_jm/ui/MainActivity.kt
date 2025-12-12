@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             Log.w("MainActivity", "La clave de AEMET no está configurada o es la de ejemplo.")
         } else {
             // Usar la clave para las llamadas a la API
-            getDatosAemet("27030")
+            getDatosAemet("49166")
         }
     }
 
@@ -119,6 +119,14 @@ class MainActivity : AppCompatActivity() {
                 Log.d(
                     TAG,
                     "Temperatura mínima: ${prediccionFinal.prediccion.dia.first().temperatura.minima}ªC"
+                )
+                Log.d(
+                    TAG,
+                    "Cota nieve provincia: respuesta.provincias.forEach { prov ->\n" +
+                            prediccionFinal.prediccion.dia.first().cotaNieveProv.forEach { prov ->
+                                "Log.d(TAG, \"Cota Nieve Provincia: ${prov.periodo} - ${prov.value}\"})
+                            }
+
                 )
 
                 showWeatherData(prediccionFinal)
