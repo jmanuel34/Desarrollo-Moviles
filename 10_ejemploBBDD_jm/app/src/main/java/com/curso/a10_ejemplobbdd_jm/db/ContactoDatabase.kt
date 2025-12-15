@@ -46,7 +46,7 @@ abstract class ContactoDatabase : RoomDatabase() {
                      * de entidad, como agregar un parámetro nuevo,
                      * puedes permitir que la app borre y vuelva a inicializar la base de datos.
                      */
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(true)
                     // .addMigrations(MIGRATION_1_2) // Opción: añadir migraciones, cuando queremos mantener los datos y añadir algún campo.
                     .build()
                     /**
@@ -65,7 +65,7 @@ abstract class ContactoDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Definir la operación a realizar en la migración.
                 // En este caso, añadir una nueva columna 'nif' a la tabla 'user'.
-                database.execSQL("ALTER TABLE user ADD COLUMN nif TEXT")
+               // database.execSQL("ALTER TABLE user ADD COLUMN nif TEXT")
             }
         }
 

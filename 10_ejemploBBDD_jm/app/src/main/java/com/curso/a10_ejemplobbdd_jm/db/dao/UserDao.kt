@@ -1,26 +1,17 @@
 package com.curso.a10_ejemplobbdd_jm.db.dao
-import android.content.Context
 import androidx.room.Dao
-import androidx.room.Database
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import androidx.room.Update
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import  com.curso.a10_ejemplobbdd_jm.db.entity.User
+import com.curso.a10_ejemplobbdd_jm.db.entity.User
 import kotlinx.coroutines.flow.Flow
 
-
-/*
-* DAO (Data Access Object) para la entidad User.
-* Aquí se definen todos los métodos para acceder a la tabla 'user'.
-*/
-// */
-
+/**
+ * DAO (Data Access Object) para la entidad User.
+ * Aquí se definen todos los métodos para acceder a la tabla 'user'.
+ */
 @Dao
 interface UserDao {
 
@@ -55,8 +46,8 @@ interface UserDao {
      * cada vez que cambien los datos de la base de datos.
      * Room mantiene este Flow actualizado por ti, lo que significa que solo
      * necesitas obtener los datos de forma explícita una vez.
-     * Esta configuración es útil para actualizar la lista de inventario,
-     * que implementarás en el siguiente codelab. Debido al tipo de datos que se
+     * Esta configuración es útil para actualizar la lista de contactos,
+     * Debido al tipo de datos que se
      * muestra para Flow, Room también ejecuta la búsqueda en el subproceso en segundo plano.
      * No necesitas convertirla de manera explícita en una función suspend ni
      * llamar dentro del alcance de la corrutina.
@@ -69,7 +60,7 @@ interface UserDao {
      * El ":uid" en la consulta se corresponde con el parámetro uid del método.
      */
     @Query("SELECT * FROM user WHERE uid = :uid")
-    fun getUserById(uid: Int): Flow<User?>
+    fun getUserById(uid: Int): Flow<User>
 
     /**
      * Obtiene todos los usuarios que son mayores de edad (18 años o más).
@@ -77,5 +68,4 @@ interface UserDao {
      */
     @Query("SELECT * FROM user WHERE edad >= 18")
     fun getAdultUsers(): Flow<List<User>>
-
 }

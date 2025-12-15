@@ -30,7 +30,7 @@ data class User(
     // val email: String,
 
     @ColumnInfo(name = "fecha_creacion")
-    val date: Long? = null,
+    val date: Long,
 
     @ColumnInfo(name = "avatar")
     val image: ByteArray? = null, //No almacenar Blob muy grandes, mejor usar un enlace a las imágenes o comprimir las imágenes.
