@@ -1,6 +1,7 @@
 package com.curso.contacto
 
 import ContactAdapter
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.curso.contacto.databinding.ActivityMainBinding
 import com.curso.contacto.db.ContactoDatabase
 import com.curso.contacto.db.dao.ContactoDao
 import com.curso.contacto.db.entity.Contacto
+import com.curso.contacto.ui.DetailActivity
 import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        // Dentro de onCreate de MainActivity
+        binding.fabAddContact.setOnClickListener {
+            val intent = Intent(this, DetailActivity::class.java)
+            startActivity(intent)
+        }
         setContentView(binding.root)
         lifecycleScope.launch {
 
@@ -92,31 +99,7 @@ class MainActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat(formato, Locale.getDefault())
         return sdf.format(calendar.time)
     }
-    /*
-    fun generarContacto() {
-        val nuevoNombre = "Juan"
-        val nuevosApellidos = "Pérez García"
-        val nuevoMovil = "600123456"
-        val nuevoFijo: String? = "910987654" // Opcional, puede ser null
-        val nuevaDireccion: String? = null // Opcional, en este caso lo dejamos null
 
-        val miNuevoContacto = Contacto(
-
-            nombre = faker.name.firstName(),
-            apellidos = faker.name.lastName(),
-            telefonoFijo = null,
-            telefonoMovil = Random.nextInt(616111111, 699999999).toString(),
-            direccion = nuevaDireccion,
-            empresa = "Mi Empresa S.L.",
-            email = "juan.perez@ejemplo.com",
-            cumpleanos = "1990-05-15",
-            //  notas = "Amigo de la universidad"
-            // Sin foto por ahora
-            // id = 0L // No es necesario si usas el valor por defecto
-        )
-    }
-
-     */
 
 
 }

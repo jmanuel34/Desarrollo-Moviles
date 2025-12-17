@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Contacto</string>
+    <string name="btn_back_desc">Atrás</string>
+    <string name="title_contacto">Contacto</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_delete">Borrar</string>
+    <string name="btn_accept">Aceptar</string>
+    <string name="hint_nombre">Ej. Elena</string>
 </resources>

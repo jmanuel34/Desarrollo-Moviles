@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <!-- Toolbar personalizada -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarDetail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            android:contentDescription="Atrás" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Contacto"
+            android:textColor="#333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:text="Editar"
+            android:textColor="#007AFF"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomButtonsContainer"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDetail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Imagen de Perfil -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/ic_menu_report_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="-8dp"
+                    app:fabCustomSize="32dp"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_image"
+                    app:layout_constraintEnd_toEndOf="@id/profile_image"
+                    app:srcCompat="@android:drawable/ic_menu_camera"
+                    app:backgroundTint="#007AFF"
+                    android:tint="@android:color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="Cambiar foto"
+                android:textColor="#007AFF" />
+
+            <!-- Campos del Formulario -->
+            <TextView style="@style/LabelStyle" android:text="Nombre" android:layout_marginTop="24dp" />
+            <EditText android:id="@+id/etNombre" style="@style/InputStyle" android:hint="Ej. Elena" />
+
+            <TextView style="@style/LabelStyle" android:text="Apellidos" />
+            <EditText android:id="@+id/etApellidos" style="@style/InputStyle" android:hint="Ej. García López" />
+
+            <TextView style="@style/LabelStyle" android:text="Teléfono móvil" />
+            <EditText android:id="@+id/etTelefono" style="@style/InputStyle" android:hint="+34 600 123 456" android:inputType="phone" />
+
+            <TextView style="@style/LabelStyle" android:text="Email (Opcional)" />
+            <EditText android:id="@+id/etEmail" style="@style/InputStyle" android:hint="elena@email.com" android:inputType="textEmailAddress" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomButtonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btnDelete"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Borrar"
+            android:textColor="#FF3B30"
+            app:strokeColor="#FF3B30"
+            app:cornerRadius="24dp" />
+
+        <Button
+            android:id="@+id/btnAccept"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Aceptar"
+            android:backgroundTint="#007AFF"
+            app:cornerRadius="24dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
