@@ -11,8 +11,9 @@ import com.curso.contacto.db.dao.ContactoDao
 import com.curso.contacto.db.entity.Contacto
 import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlin.random.Random
 
 
@@ -62,38 +63,66 @@ class MainActivity : AppCompatActivity() {
     fun generateFakeUsers(count: Int): List<Contacto> {
         val userList = mutableListOf<Contacto>()
         repeat(count) {
-
+            //*
             val user = Contacto(
                 nombre = faker.name.firstName(),
                 apellidos = faker.name.lastName(),
-                telefonoMovil = Random.nextInt(16, 80),
-                email = faker.internet.email(), // Genera un email,
-                cumpleanos = faker.date.birthday().toString(),
-                rutaFotoPerfil = null // Dejamos la imagen como nula por ahora
+                telefonoFijo = null,
+                telefonoMovil = Random.nextInt(16, 80).toString(),
+                direccion = faker.address.toString(),
+                empresa = faker.industrySegments.toString(),
+                email = faker.internet.email(),
+                cumpleanos = generarFechaFicticiaComoString(),
+                fotoPerfilUri= null
             )
             userList.add(user)
         }
         return userList
     }
-    /**
-     * Genera una fecha de cumpleaños aleatoria y la devuelve como String.
-     * @param minAge La edad mínima que puede tener la persona (ej: 18)
-     * @param maxAge La edad máxima que puede tener la persona (ej: 80)
-     * @param format El patrón de formato deseado para el String (ej: "dd/MM/yyyy")
-     */
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun generateRandomBirthdayString(
-        minAge: Long = 18,
-        maxAge: Long = 80,
-        format: String = "yyyy-MM-dd"
-    ): String {
-        val range = maxAge - minAge + 1
 
-        val randomDay = kotlin.random.Random.nextLong(range) + 1
-        // 6. Formatear la fecha a String
-        val formatter = DateTimeFormatter.ofPattern(format)
-        return randomDay.fo
+
+    fun generarFechaFicticiaComoString(formato: String = "dd-MM-yyyy"): String {
+        val calendar = Calendar.getInstance()
+        val random = java.util.Random()
+
+        // Definir rango de años (ajusta según necesites)
+        val minYear = 1970
+        val maxYear = 2025
+        val randomYear = random.nextInt(maxYear - minYear + 1) + minYear
+
+        // Día del año: de 1 a 365 (o 366, pero simplificamos)
+        val randomDayOfYear = random.nextInt(365) + 1
+
+        calendar.set(Calendar.YEAR, randomYear)
+        calendar.set(Calendar.DAY_OF_YEAR, randomDayOfYear)
+
+        val sdf = SimpleDateFormat(formato, Locale.getDefault())
+        return sdf.format(calendar.time)
+    }
+    /*
+    fun generarContacto() {
+        val nuevoNombre = "Juan"
+        val nuevosApellidos = "Pérez García"
+        val nuevoMovil = "600123456"
+        val nuevoFijo: String? = "910987654" // Opcional, puede ser null
+        val nuevaDireccion: String? = null // Opcional, en este caso lo dejamos null
+
+        val miNuevoContacto = Contacto(
+
+            nombre = faker.name.firstName(),
+            apellidos = faker.name.lastName(),
+            telefonoFijo = null,
+            telefonoMovil = Random.nextInt(616111111, 699999999).toString(),
+            direccion = nuevaDireccion,
+            empresa = "Mi Empresa S.L.",
+            email = "juan.perez@ejemplo.com",
+            cumpleanos = "1990-05-15",
+            //  notas = "Amigo de la universidad"
+            // Sin foto por ahora
+            // id = 0L // No es necesario si usas el valor por defecto
+        )
     }
 
+     */
 
 }

@@ -45,10 +45,6 @@ data class Contacto(
     val cumpleanos: String?, // Recomendación: Si quieres manejarlo como fecha (Date/Calendar)
     // de forma avanzada, necesitarás un TypeConverter.
 
-    @ColumnInfo(name = "notas")
-    val notas: String?,
-
-    // Para la foto, almacenamos la ruta o URI de la imagen
-    @ColumnInfo(name = "ruta_foto_perfil")
-    val rutaFotoPerfil: String?
+    @ColumnInfo(name = "foto_perfil_uri")
+    val fotoPerfilUri: String? // Almacenaremos la URI como String
 )
