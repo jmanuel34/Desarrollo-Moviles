@@ -1,5 +1,6 @@
 package com.curso.contacto.db.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -7,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.curso.contacto.db.entity.Contacto
 import kotlinx.coroutines.flow.Flow
-
+@Dao
 interface ContactoDao {
 
     // ------------------------------------
@@ -17,7 +18,7 @@ interface ContactoDao {
     // OnConflictStrategy.REPLACE: Si se intenta insertar un contacto con el mismo
     // ID (algo que solo pasaría si no usáramos autoGenerate o si lo forzáramos),
     // reemplaza el registro existente.
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(contacto: Contacto)
 
     // ------------------------------------

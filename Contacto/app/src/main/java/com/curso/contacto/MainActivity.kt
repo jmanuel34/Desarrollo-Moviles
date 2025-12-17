@@ -1,7 +1,9 @@
 package com.curso.contacto
 
+import ContactAdapter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +12,7 @@ import com.curso.contacto.db.ContactoDatabase
 import com.curso.contacto.db.dao.ContactoDao
 import com.curso.contacto.db.entity.Contacto
 import io.github.serpro69.kfaker.Faker
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -18,41 +21,31 @@ import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
-    /*
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-
-    }
-
-     */
     private lateinit var binding: ActivityMainBinding
     private val db by lazy { ContactoDatabase.getDatabase(this) }
     private val contactoDao by lazy { db.contactoDao() }
-
     //https://github.com/serpro69/kotlin-faker
     private val faker = Faker()
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         lifecycleScope.launch {
-            //userDao.insert(user)
-            //*
-            generateFakeUsers(20).forEach {
-                ContactoDao.insert(it)
+
+           generateFakeUsers(50).forEach {
+                contactoDao.insert(it)
             }
             //*/
-        }
 
+            val listaContactos = contactoDao.getAll().firstOrNull() ?: emptyList()
+            Log.i("Datos", listaContactos.toString())
+            val adapter = ContactAdapter(listaContactos)
+            binding.recyclerViewContacts.adapter = adapter
+        }
     }
     /**
      * Genera una lista de usuarios falsos utilizando la librería Faker.
@@ -68,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 nombre = faker.name.firstName(),
                 apellidos = faker.name.lastName(),
                 telefonoFijo = null,
-                telefonoMovil = Random.nextInt(16, 80).toString(),
+                telefonoMovil = Random.nextInt(616445522, 696111111).toString(),
                 direccion = faker.address.toString(),
                 empresa = faker.industrySegments.toString(),
                 email = faker.internet.email(),
@@ -124,5 +117,6 @@ class MainActivity : AppCompatActivity() {
     }
 
      */
+
 
 }
