@@ -1,6 +1,4 @@
 package com.curso.contacto
-
-import ContactAdapter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -42,11 +40,11 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
         lifecycleScope.launch {
-
+            /*
            generateFakeUsers(50).forEach {
                 contactoDao.insert(it)
             }
-            //*/
+            */
 
             val listaContactos = contactoDao.getAll().firstOrNull() ?: emptyList()
             Log.i("Datos", listaContactos.toString())

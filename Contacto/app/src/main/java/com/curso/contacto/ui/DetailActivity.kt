@@ -1,5 +1,6 @@
 package com.curso.contacto.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,63 +12,45 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class DetailActivity : AppCompatActivity() {
 
-    // 1. Corregido: El tipo debe ser ActivityDetailBinding
     private lateinit var binding: ActivityDetailBinding
-
-    // 2. Corregido: Usamos el delegado lazy, no hace falta inicializar en onCreate
     private val db by lazy { ContactoDatabase.getDatabase(this) }
-    private val contactoDao by lazy { db.contactoDao() }
-
-    // 3. Corregido: Declarar la variable para el ID
-    private var contactoId: Long = -1
+    private var contacto: Contacto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Inicialización correcta del binding
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obtener el ID del intent
-        contactoId = intent.getLongExtra("contactoId", -1)
-        if (contactoId != -1L) {
-            cargarDatosContacto()
+        // Recibir el objeto Contacto
+        contacto = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("EXTRA_CONTACT", Contacto::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra("EXTRA_CONTACT")
         }
+
+        // Si tenemos un contacto, cargamos sus datos en la UI
+        contacto?.let { populateUI(it) }
 
         configurarBotones()
     }
 
-    private fun cargarDatosContacto() {
-        lifecycleScope.launch {
-            val contacto = withContext(Dispatchers.IO) {
-                db.contactoDao().getById(contactoId)
-            }
-            contacto?.let {
-                binding.etNombre.setText(it.nombre)
-                binding.etApellidos.setText(it.apellidos)
-                binding.etTelefono.setText(it.telefonoMovil)
-                binding.etEmail.setText(it.email)
-            }
-        }
+    private fun populateUI(contacto: Contacto) {
+        binding.etNombre.setText(contacto.nombre)
+        binding.etApellidos.setText(contacto.apellidos)
+        binding.etTelefono.setText(contacto.telefonoMovil)
+        binding.etEmail.setText(contacto.email)
     }
 
     private fun configurarBotones() {
-        // Botón Atrás
         binding.btnBack.setOnClickListener { finish() }
 
-        // Botón Borrar
         binding.btnDelete.setOnClickListener {
-            if (contactoId != -1L) {
-                eliminarContacto()
-            } else {
-                finish() // Si es nuevo y no existe, solo cerramos
-            }
+            contacto?.let { eliminarContacto(it) } ?: finish()
         }
 
-        // Botón Aceptar (Guardar o Actualizar)
         binding.btnAccept.setOnClickListener {
             guardarContacto()
         }
@@ -83,40 +66,38 @@ class DetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Nombre y teléfono son obligatorios", Toast.LENGTH_SHORT).show()
             return
         }
-        val entero: Int = 42
 
-        val contacto = Contacto(
-            id = if (contactoId == -1L) 0 else contactoId, // 0 para que Room genere el ID
+        val contactoParaGuardar = Contacto(
+            id = contacto?.id ?: 0, // Si el contacto es nuevo, id es 0 para que Room lo genere
             nombre = nombre,
             apellidos = apellidos,
-            telefonoFijo = null,
+            telefonoFijo = contacto?.telefonoFijo,
             telefonoMovil = telefono,
             email = email,
-            direccion = null,
-            empresa = null,
-            cumpleanos = null,
-            fotoPerfilUri = null
+            direccion = contacto?.direccion,
+            empresa = contacto?.empresa,
+            cumpleanos = contacto?.cumpleanos,
+            fotoPerfilUri = contacto?.fotoPerfilUri
         )
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if (contactoId == -1L) {
-                    db.contactoDao().insert(contacto)
+                if (contactoParaGuardar.id == 0L) {
+                    db.contactoDao().insert(contactoParaGuardar)
                 } else {
-                    db.contactoDao().update(contacto)
+                    db.contactoDao().update(contactoParaGuardar)
                 }
             }
-            Toast.makeText(this@DetailActivity, "Guardado correctamente", Toast.LENGTH_SHORT).show()
-            finish() // Volver a la lista
+            val message = if (contacto == null) "Guardado correctamente" else "Actualizado correctamente"
+            Toast.makeText(this@DetailActivity, message, Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
-    private fun eliminarContacto() {
+    private fun eliminarContacto(contacto: Contacto) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                // Necesitamos el objeto completo para borrar o crear un método en el DAO que borre por ID
-                val contacto = db.contactoDao().getById(contactoId)
-                contacto?.let { db.contactoDao().delete(it) }
+                db.contactoDao().delete(contacto)
             }
             Toast.makeText(this@DetailActivity, "Contacto eliminado", Toast.LENGTH_SHORT).show()
             finish()
