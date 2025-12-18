@@ -15,9 +15,10 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Contactos"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="50dp"
+            app:title="Contactos" app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextAppearance="@style/MiEstiloDeTituloToolbar" /> <!-- ESTILO APLICADO -->
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,11 +41,17 @@
             android:padding="12dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_contacts"
+            android:id="@+id/recyclerViewContacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_contact"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:fastScrollEnabled="true"
+            android:scrollbars="vertical"
+            android:scrollbarFadeDuration="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_contact" />
+
+
 
     </LinearLayout>
 

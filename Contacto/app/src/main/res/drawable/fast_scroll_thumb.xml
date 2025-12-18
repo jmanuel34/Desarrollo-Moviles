@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/fast_scroll_thumb.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- El color del pulgar. Puedes cambiarlo por el que prefieras -->
+    <solid android:color="#007AFF" /> <!-- Este es un color azul, similar al de iOS -->
+
+    <!-- Hace que los bordes sean redondeados -->
+    <corners android:radius="8dp" />
+
+    <!-- El ancho de la barra -->
+    <size android:width="8dp" />
+
+</shape>
+    

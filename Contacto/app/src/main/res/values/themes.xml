@@ -3,6 +3,7 @@
     <style name="Base.Theme.Contacto" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fastScrollThumbDrawable">@drawable/fast_scroll_thumb</item>
     </style>
 
     <style name="Theme.Contacto" parent="Base.Theme.Contacto" />
@@ -28,4 +29,10 @@
     <style name="CircleImageView">
         <item name="cornerSize">50%</item>
     </style>
+    <!-- res/values/styles.xml o themes.xml -->
+    <style name="MiEstiloDeTituloToolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item> <!-- Letra un poco más pequeña (el default es 20sp) -->
+        <item name="android:textColor">@color/purple_500</item> <!-- Color violeta -->
+    </style>
+
 </resources>
