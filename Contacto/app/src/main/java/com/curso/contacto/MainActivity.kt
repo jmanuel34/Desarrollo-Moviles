@@ -14,10 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.curso.contacto.databinding.ActivityMainBinding
 import com.curso.contacto.db.ContactoDatabase
+import com.curso.contacto.ui.DetailActivity
 import com.curso.contacto.db.dao.ContactoDao
 import com.curso.contacto.db.entity.Contacto
 import com.curso.contacto.ui.ContactAdapter
-import com.curso.contacto.ui.DetailActivity
 import io.github.serpro69.kfaker.Faker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
