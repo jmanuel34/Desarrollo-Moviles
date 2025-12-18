@@ -52,7 +52,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Más opciones"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@drawable/ic_more_horiz"
+        app:tint="?android:attr/textColorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
