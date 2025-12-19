@@ -3,6 +3,7 @@ package com.curso.contacto
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.curso.contacto.databinding.ActivityMainBinding
 import com.curso.contacto.db.ContactoDatabase
 import com.curso.contacto.ui.DetailActivity
-import com.curso.contacto.db.dao.ContactoDao
 import com.curso.contacto.db.entity.Contacto
 import com.curso.contacto.ui.ContactAdapter
 import io.github.serpro69.kfaker.Faker
@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.random.Random
+import kotlin.text.lowercase
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +34,10 @@ class MainActivity : AppCompatActivity() {
     private val db by lazy { ContactoDatabase.getDatabase(this) }
     private val contactoDao by lazy { db.contactoDao() }
     private val faker = Faker()
-    
+    //  NUEVO: Variable para guardar la lista original de contactos
+    private var listaCompletaContactos: List<Contacto> = emptyList()
+
+
     private val adapter: ContactAdapter by lazy {
         ContactAdapter(emptyList())
     }
@@ -45,13 +49,30 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Nuevo codigo. acaba aqui
         // AJUSTE PARA EVITAR SUPERPOSICIÓN CON BARRA DE ESTADO (Hora, WiFi, etc.)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(top = insets.top)
             windowInsets
         }
+        setSupportActionBar(binding.toolbar)
+        // Añade el listener con la sintaxis correcta usando 'override'
+        val searchEditText = binding.searchBar
+        searchEditText.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No es necesario para este caso
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Cada vez que el texto cambie, llama a TU función de filtrado
+                filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No es necesario para este caso
+            }
+        })
         setupRecyclerView()
 
         // Pulsación corta: Ir a DetailActivity para añadir manualmente
@@ -67,7 +88,11 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.IO) {
                     fakes.forEach { contactoDao.insert(it) }
                 }
-                Toast.makeText(this@MainActivity, "10 contactos ficticios generados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    "10 contactos ficticios generados",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             true // Indica que el evento ha sido consumido
         }
@@ -75,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             contactoDao.getAll().collect { listaContactos ->
                 Log.i("Datos", "Contactos actualizados: ${listaContactos.size}")
+                listaCompletaContactos = listaContactos
                 adapter.updateData(listaContactos)
             }
         }
@@ -98,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 empresa = faker.industrySegments.toString(),
                 email = faker.internet.email(),
                 cumpleanos = generarFechaFicticiaComoString(),
-                fotoPerfilUri= null
+                fotoPerfilUri = null
             )
             userList.add(user)
         }
@@ -117,4 +143,24 @@ class MainActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat(formato, Locale.getDefault())
         return sdf.format(calendar.time)
     }
+
+    private fun filter(query: String?) {
+        val listaFiltrada: List<Contacto>
+
+        if (query.isNullOrBlank()) {
+            // Si la búsqueda está vacía, muestra la lista completa original
+            listaFiltrada = listaCompletaContactos
+        } else {
+            // Filtra la lista original buscando en nombre y apellidos
+            val searchQuery = query.lowercase().trim()
+            listaFiltrada = listaCompletaContactos.filter { contact ->
+                contact.nombre.lowercase().contains(searchQuery) ||
+                        contact.apellidos.lowercase().contains(searchQuery)
+            }
+        }
+
+        //  CLAVE: Actualiza el adaptador con la nueva lista (filtrada o completa)
+        adapter.updateData(listaFiltrada)
+    }
+
 }
