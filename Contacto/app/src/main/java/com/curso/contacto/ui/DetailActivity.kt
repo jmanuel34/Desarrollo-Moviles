@@ -81,9 +81,6 @@ class DetailActivity : AppCompatActivity() {
         binding.etTelefono.setText(c.telefonoMovil)
         binding.etEmail.setText(c.email)
 
-        // --- TEMPORARILY DISABLED FOR DEBUGGING ---
-        // The following code is temporarily disabled to diagnose the crash.
-        /*
         try {
             val imageUriString = c.fotoPerfilUri
             if (imageUriString.isNullOrBlank()) {
@@ -105,7 +102,6 @@ class DetailActivity : AppCompatActivity() {
             }
             Toast.makeText(this, "No se pudo cargar la imagen. Es posible que el permiso se haya perdido.", Toast.LENGTH_LONG).show()
         }
-        */
     }
 
     private fun configurarBotones() {
