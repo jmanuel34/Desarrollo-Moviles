@@ -1,14 +1,20 @@
 package com.curso.contacto.ui
 
-import android.R
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.curso.contacto.R
 import com.curso.contacto.databinding.ActivityDetailBinding
 import com.curso.contacto.db.ContactoDatabase
 import com.curso.contacto.db.entity.Contacto
@@ -19,9 +25,28 @@ import kotlinx.coroutines.withContext
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val db by lazy { ContactoDatabase.Companion.getDatabase(this) }
+    private val db by lazy { ContactoDatabase.getDatabase(this) }
     private var contacto: Contacto? = null
     private var isEditMode = false
+    private var newImageUri: String? = null
+
+    private val selectImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            try {
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                contentResolver.takePersistableUriPermission(it, takeFlags)
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+                Toast.makeText(this, "No se pudo guardar el acceso a la imagen", Toast.LENGTH_SHORT).show()
+            }
+
+            newImageUri = it.toString()
+            binding.profileImage.load(it) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +67,9 @@ class DetailActivity : AppCompatActivity() {
             isEditMode = true
             setFieldsEditable(true)
             binding.tvEdit.visibility = View.GONE
+            binding.profileImage.load(android.R.drawable.ic_menu_gallery) {
+                transformations(CircleCropTransformation())
+            }
         }
 
         configurarBotones()
@@ -52,6 +80,32 @@ class DetailActivity : AppCompatActivity() {
         binding.etApellidos.setText(c.apellidos)
         binding.etTelefono.setText(c.telefonoMovil)
         binding.etEmail.setText(c.email)
+
+        // --- TEMPORARILY DISABLED FOR DEBUGGING ---
+        // The following code is temporarily disabled to diagnose the crash.
+        /*
+        try {
+            val imageUriString = c.fotoPerfilUri
+            if (imageUriString.isNullOrBlank()) {
+                binding.profileImage.load(android.R.drawable.ic_menu_gallery) {
+                    transformations(CircleCropTransformation())
+                }
+            } else {
+                binding.profileImage.load(Uri.parse(imageUriString)) {
+                    crossfade(true)
+                    placeholder(android.R.drawable.ic_menu_gallery)
+                    error(android.R.drawable.ic_menu_gallery)
+                    transformations(CircleCropTransformation())
+                }
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            binding.profileImage.load(android.R.drawable.ic_menu_gallery) {
+                transformations(CircleCropTransformation())
+            }
+            Toast.makeText(this, "No se pudo cargar la imagen. Es posible que el permiso se haya perdido.", Toast.LENGTH_LONG).show()
+        }
+        */
     }
 
     private fun configurarBotones() {
@@ -84,6 +138,17 @@ class DetailActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        val changePhotoAction = { 
+            if (isEditMode) {
+                selectImageLauncher.launch("image/*")
+            } else {
+                Toast.makeText(this, "Pulse Editar para poder cambiar la foto", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.fabChangePhoto.setOnClickListener { changePhotoAction() }
+        binding.tvChangePhoto.setOnClickListener { changePhotoAction() }
     }
 
     private fun setFieldsEditable(enabled: Boolean) {
@@ -91,9 +156,12 @@ class DetailActivity : AppCompatActivity() {
 
         for (field in fields) {
             field.isEnabled = enabled
-            val color = if (enabled) R.color.black else com.curso.contacto.R.color.gris_oscuro
+            val color = if (enabled) R.color.black else R.color.gris_oscuro
             field.setTextColor(ContextCompat.getColor(this, color))
         }
+
+        binding.fabChangePhoto.visibility = if (enabled) View.VISIBLE else View.GONE
+        binding.tvChangePhoto.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
     private fun mostrarDialogoConfirmacion(mensaje: String, titulo: String, accion: () -> Unit) {
@@ -116,6 +184,8 @@ class DetailActivity : AppCompatActivity() {
             return
         }
 
+        val fotoUri = newImageUri ?: contacto?.fotoPerfilUri
+
         val contactoEditado = Contacto(
             id = contacto?.id ?: 0,
             nombre = nuevoNombre,
@@ -126,7 +196,7 @@ class DetailActivity : AppCompatActivity() {
             empresa = null,
             email = nuevoEmail,
             cumpleanos = null,
-            fotoPerfilUri = null
+            fotoPerfilUri = fotoUri
         )
 
         lifecycleScope.launch {
